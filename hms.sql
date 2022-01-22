@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 26, 2019 at 07:40 AM
--- Server version: 5.7.23
--- PHP Version: 7.2.10
+-- Generation Time: Jan 21, 2022 at 12:45 PM
+-- Server version: 5.7.31
+-- PHP Version: 7.3.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -42,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `updationDate`) VALUES
-(1, 'admin', 'amit1234', '28-12-2016 11:42:05 AM');
+(1, 'admin', '123456', '28-12-2016 11:42:05 AM');
 
 -- --------------------------------------------------------
 
@@ -60,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   `status` tinyint(4) NOT NULL,
   `prescription` text NOT NULL,
   PRIMARY KEY (`apid`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `appointment`
@@ -102,7 +101,9 @@ INSERT INTO `appointment` (`apid`, `patid`, `docid`, `date`, `slno`, `status`, `
 (49, 2, 11, '2018-09-07', 2, 1, 'You need to go USA'),
 (50, 2, 3, '2019-04-06', 0, 0, ''),
 (51, 2, 6, '2019-04-09', 0, 0, ''),
-(52, 17, 13, '2019-04-29', 0, 1, '');
+(52, 17, 13, '2019-04-29', 0, 1, ''),
+(53, 2, 5, '2021-12-18', 0, 0, ''),
+(54, 2, 5, '2021-12-18', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -178,7 +179,7 @@ INSERT INTO `doctors` (`id`, `specilization`, `doctorName`, `address`, `docFees`
 (9, 'Dentist', 'amit', 'utttara', '2000', 91098108410, 'a@gmail.com', 'fcea920f7412b5da7be0cf42b8c93759', '2019-01-28 19:15:46', ''),
 (10, 'Ear-Nose-Throat (Ent) Specialist', 'ashim goswami', 'uttara 10 no sector,Dhaka', '1000', 17243701817, 'as@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '2019-02-22 18:58:24', ''),
 (11, 'General Physician', 'Raju', 'uttara,dhaka', '2000', 17243701819, 'd@gmail.com', 'ce8724150e6fdcad631f5432d5c9dc3d', '2019-03-02 16:39:06', ''),
-(12, 'Dermatologist', 'rinki', 'Asdsfg', '500', 1724370817, 'mjk.limon@outlook.com', '5f4dcc3b5aa765d61d8327deb882cf99', '2019-03-09 11:36:44', ''),
+(12, 'Dermatologist', 'rinki', 'Asdsfg', '500', 1724370817, 'mjk.limon@outlook.com', 'e10adc3949ba59abbe56e057f20f883e', '2019-03-09 11:36:44', ''),
 (13, 'heart specialist ', 'Dr. Samim Sharkar', 'Gazipur ', '1000', 1967456893, 'samim@gmail.com', 'ce8724150e6fdcad631f5432d5c9dc3d', '2019-03-09 18:36:12', '');
 
 -- --------------------------------------------------------
@@ -274,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `doctorspecilization` (
 INSERT INTO `doctorspecilization` (`id`, `specilization`, `creationDate`, `updationDate`) VALUES
 (2, 'General Physician', '2016-12-28 06:38:12', '29-04-2019 06:32:46 PM'),
 (3, 'Dermatologist', '2016-12-28 06:38:48', ''),
-(4, 'heart specialist ', '2019-03-09 18:15:49', ''),
+(4, 'Heart specialist ', '2019-03-09 18:15:49', ''),
 (5, 'Cardiologists ', '2019-03-09 18:26:56', ''),
 (6, 'Cardiologists ', '2019-03-09 18:26:56', '');
 
@@ -326,32 +327,31 @@ CREATE TABLE IF NOT EXISTS `patients` (
   `fullname` varchar(50) NOT NULL,
   `gender` varchar(6) NOT NULL,
   `age` int(11) NOT NULL,
-  `problems` text NOT NULL,
   `address` varchar(100) NOT NULL,
   `phone` varchar(90) NOT NULL,
   `datetime` datetime(6) NOT NULL,
   `blood_group` varchar(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `adid` int(50) NOT NULL,
   PRIMARY KEY (`patid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `patients`
 --
 
-INSERT INTO `patients` (`patid`, `fullname`, `gender`, `age`, `problems`, `address`, `phone`, `datetime`, `blood_group`, `email`, `password`, `adid`) VALUES
-(2, 'Rehana Parvin', 'Female', 22, '', 'Gazipur', '1915566754', '2018-07-19 15:17:17.000000', 'O+', 'p@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 60),
-(3, 'Shabiha Akter', 'Female', 22, '', 'Savar', '1915566754', '2018-07-19 15:18:12.000000', 'A+', 'shabiha@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 61),
-(4, 'Farmadi Tousi', 'Male', 22, '', 'Comilla', '1915566754', '2018-07-19 15:19:07.000000', 'B+', 'tousi@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 62),
-(5, 'Suvrho Mojumdar', 'Male', 22, '', 'Tangail', '1915566754', '2018-07-19 15:20:04.000000', 'B+', 'suvrho@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 63),
-(6, 'Sharmin Akter', 'Female', 22, '', 'Mirpur,Dhaka', '1915566754', '2018-08-03 00:00:00.000000', 'B+', 'nipa@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 0),
-(9, 'Raihan Subhan', 'Male', 22, '', 'Uttara, Dhaka', '1111119', '2018-08-03 17:02:15.000000', 'AB-', 'raihan@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 0),
-(10, 'Sanjida siddique', 'Female', 22, '', 'Uttara, Dhaka', '01915566754', '2018-08-03 17:09:11.000000', 'B-', 'shapla@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 75),
-(11, 'Rabiul Alam', 'Male', 22, '', 'Savar', '01915566754', '2018-08-03 17:15:40.000000', 'B-', 'ratul@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b', 0),
-(16, 'samim', 'male', 32, 'gastrict', 'uttara, dhaka', '0102850925', '0000-00-00 00:00:00.000000', 'ab+', 'sak@gmail.com', 'ce8724150e6fdcad631f5432d5c9dc3d', 61),
-(17, 'Saifur Rahman', 'Male', 23, 'Fever', 'Badda Dhaka', '01967234567', '2019-04-29 00:00:00.000000', 'O+', 'saifur@gmail.com', 'e9127d8dddf46f0826a5fa3b3b76223c', 23);
+INSERT INTO `patients` (`patid`, `fullname`, `gender`, `age`, `address`, `phone`, `datetime`, `blood_group`, `email`, `password`) VALUES
+(2, 'Rehana Parvins', 'Female', 22, 'Gazipur', '1915566754', '2018-07-19 15:17:17.000000', 'A+', 'p@gmail.com', 'e10adc3949ba59abbe56e057f20f883e'),
+(3, 'Shabiha Akter', 'Female', 22, 'Savar', '1915566754', '2018-07-19 15:18:12.000000', 'A+', 'shabiha@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(4, 'Farmadi Tousi', 'Male', 22, 'Comilla', '1915566754', '2018-07-19 15:19:07.000000', 'B+', 'tousi@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(5, 'Suvrho Mojumdar', 'Male', 22, 'Tangail', '1915566754', '2018-07-19 15:20:04.000000', 'B+', 'suvrho@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(6, 'Sharmin Akter', 'Female', 22, 'Mirpur,Dhaka', '1915566754', '2018-08-03 00:00:00.000000', 'B+', 'nipa@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(9, 'Raihan Subhan', 'Male', 22, 'Uttara, Dhaka', '1111119', '2018-08-03 17:02:15.000000', 'AB-', 'raihan@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(10, 'Sanjida siddique', 'Female', 22, 'Uttara, Dhaka', '01915566754', '2018-08-03 17:09:11.000000', 'B-', 'shapla@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(11, 'Rabiul Alam', 'Male', 22, 'Savar', '01915566754', '2018-08-03 17:15:40.000000', 'B-', 'ratul@gmail.com', 'c4ca4238a0b923820dcc509a6f75849b'),
+(16, 'samim', 'male', 32, 'uttara, dhaka', '0102850925', '0000-00-00 00:00:00.000000', 'ab+', 'sak@gmail.com', 'ce8724150e6fdcad631f5432d5c9dc3d'),
+(17, 'Saifur Rahman', 'Male', 23, 'Badda Dhaka', '01967234567', '2019-04-29 00:00:00.000000', 'O+', 'saifur@gmail.com', 'e9127d8dddf46f0826a5fa3b3b76223c'),
+(19, 'Md Jahid Khan', 'Male', 10, 'Uttara', '01956758055', '2021-11-27 11:53:42.000000', 'b+', 'jhmasterlimon11@gmail.com', 'c6bf1d9672fcc30e55eeedb834438a53');
 
 -- --------------------------------------------------------
 
@@ -403,7 +403,7 @@ CREATE TABLE IF NOT EXISTS `reciptionist` (
 --
 
 INSERT INTO `reciptionist` (`id`, `recipName`, `address`, `reccontact`, `recemail`, `password`, `updationDate`) VALUES
-(2, 'samim khan', 'uttara', '01822345834', 'r@gmail.com', 'd04d6ae54e92b63aa38d69b17495017c', '16-03-2019 02:52:28 AM');
+(2, 'samin khan', 'uttara', '01822345834', 'r@gmail.com', '827ccb0eea8a706c4c34a16891f84e7b', '15-01-2022 11:29:47 AM');
 
 -- --------------------------------------------------------
 
@@ -662,6 +662,29 @@ INSERT INTO `tests` (`testid`, `testname`, `price`, `template`) VALUES
 (6, 'Cholesterol', 500, ''),
 (7, 'Liver', 800, ''),
 (8, 'Kidney', 600, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_bookings`
+--
+
+DROP TABLE IF EXISTS `test_bookings`;
+CREATE TABLE IF NOT EXISTS `test_bookings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `testid` int(11) NOT NULL,
+  `bookdate` datetime NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `test_bookings`
+--
+
+INSERT INTO `test_bookings` (`id`, `userid`, `testid`, `bookdate`, `status`) VALUES
+(1, 2, 1, '2022-01-21 11:07:33', 1);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

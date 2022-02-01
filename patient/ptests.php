@@ -127,7 +127,7 @@ if (isset($_GET["msg"])) {
 <html lang="en">
 
 <head>
-    <title>Doctor | Appointment History</title>
+    <title>Patient | Test</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -195,7 +195,7 @@ if (isset($_GET["msg"])) {
                                                 <tr>
                                                     <td><?= $row["testname"]; ?> </td>
                                                     <td><?= $row["price"]; ?> </td>
-                                                    <td><a href="" class="ordernow" data-id="<?php echo $row['testid'] ?>" data-amount="<?php echo $row['price'] ?>">Order Now</a></td>
+                                                    <td><a href="" class="ordernow" data-id="<?php echo $row['testid'] ?>" data-amount="<?php echo $row['price'] ?>">Book Now</a></td>
                                                 </tr>
                                         <?php
                                             }
@@ -203,7 +203,7 @@ if (isset($_GET["msg"])) {
                                         ?>
                                     </tbody>
                                 </table>
-                                <p><a href="#" onclick="window.print()" class="btn btn-info hidden-sm"><i class="fa fa-print"></i> Print</a></p>
+								<p style="font-weight:bold;">* Booking cost not refundable</p>
                             </div>
                         </div>
                     </div>

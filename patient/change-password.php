@@ -4,25 +4,24 @@ session_start();
 include('include/config.php');
 include('include/checklogin.php');
 check_login();
-$did=intval($_GET['id']);
-if(isset($_POST['submit']))
-{
-	$recname=$_POST['recipName'];
-	$address=$_POST['address'];
-	$reccontact=$_POST['reccontact'];
-	$recemail=$_POST['recemail'];
-$sql=mysqli_query($con,"Update reciptionist set recipName='$recname',address='$address',reccontact='$reccontact',recemail='$recemail', where id='$did'");
-if($sql)
-{
-$msg="Reciptionist Details updated Successfully";
+date_default_timezone_set('Asia/Kolkata');// change according timezone
+$currentTime = date( 'd-m-Y h:i:s A', time () );
 
-}
+if(isset($_POST['submit'])) {
+	$sql=mysqli_query($con,"SELECT password FROM  patients where password='".md5($_POST['cpass'])."' && patid='".$_SESSION['id']."'");
+	$num=mysqli_fetch_array($sql);
+	if($num>0) {
+		$con=mysqli_query($con,"update patients set password='".md5($_POST['npass'])."' where patid='".$_SESSION['id']."'");
+		$_SESSION['msg1']="Password Changed Successfully !!";
+	} else {
+		$_SESSION['msg1']="Old Password not match !!";
+	}
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Admin | Edit Reciptionist Details</title>
+		<title>Doctor  | change Password</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,13 +42,42 @@ $msg="Reciptionist Details updated Successfully";
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-
+<script type="text/javascript">
+function valid()
+{
+if(document.chngpwd.cpass.value=="")
+{
+alert("Current Password Filed is Empty !!");
+document.chngpwd.cpass.focus();
+return false;
+}
+else if(document.chngpwd.npass.value=="")
+{
+alert("New Password Filed is Empty !!");
+document.chngpwd.npass.focus();
+return false;
+}
+else if(document.chngpwd.cfpass.value=="")
+{
+alert("Confirm Password Filed is Empty !!");
+document.chngpwd.cfpass.focus();
+return false;
+}
+else if(document.chngpwd.npass.value!= document.chngpwd.cfpass.value)
+{
+alert("Password and Confirm Password Field do not match  !!");
+document.chngpwd.cfpass.focus();
+return false;
+}
+return true;
+}
+</script>
 
 	</head>
 	<body>
 		<div id="app">
       <?php include('include/sidebar.php');?>
-			  <div class="app-content">
+			   <div class="app-content">
 						<?php include('include/header.php');?>
 
 				<!-- end: TOP NAVBAR -->
@@ -59,16 +87,16 @@ $msg="Reciptionist Details updated Successfully";
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Admin | Edit Reciptionist Details</h1>
-								</div>
-    								<ol class="breadcrumb">
-    									<li>
-    										<span>Admin</span>
-    									</li>
-    									<li class="active">
-    										<span>Edit Reciptionist Details</span>
-    									</li>
-    								</ol>
+									<h1 class="mainTitle">Doctor | Change Password</h1>
+																	</div>
+								<ol class="breadcrumb">
+									<li>
+										<span>Doctor</span>
+									</li>
+									<li class="active">
+										<span>Change Password</span>
+									</li>
+								</ol>
 							</div>
 						</section>
 						<!-- end: PAGE TITLE -->
@@ -76,59 +104,41 @@ $msg="Reciptionist Details updated Successfully";
 						<div class="container-fluid container-fullw bg-white">
 							<div class="row">
 								<div class="col-md-12">
-									<h5 style="color: green; font-size:18px; ">
-                    <?php if($msg) { echo htmlentities($msg);}?> </h5>
-									     <div class="row margin-top-30">
-										      <div class="col-lg-8 col-md-12">
-											      <div class="panel panel-white">
-      												<div class="panel-heading">
-      													<h5 class="panel-title">Edit reciptionist info</h5>
-      												</div>
+
+									<div class="row margin-top-30">
+										<div class="col-lg-8 col-md-12">
+											<div class="panel panel-white">
+												<div class="panel-heading">
+													<h5 class="panel-title">Change Password</h5>
+												</div>
 												<div class="panel-body">
-									          <?php $sql=mysqli_query($con,"select * from reciptionist where id='$did'");
-                              while($data=mysqli_fetch_array($sql))
-                              {
-                            ?>
-													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
-
-
-                            <div class="form-group">
-															<label for="doctorname">
-																 Reciptionist Name
+								<p style="color:red;"><?php echo htmlentities($_SESSION['msg1']);?>
+								<?php echo htmlentities($_SESSION['msg1']="");?></p>
+													<form role="form" name="chngpwd" method="post" onSubmit="return valid();">
+														<div class="form-group">
+															<label for="exampleInputEmail1">
+																Current Password
 															</label>
-	                             <input type="text" name="recipName" class="form-control" value="<?php echo htmlentities($data['recipName']);?>" >
+							<input type="password" name="cpass" class="form-control"  placeholder="Enter Current Password">
+														</div>
+														<div class="form-group">
+															<label for="exampleInputPassword1">
+																New Password
+															</label>
+					<input type="password" name="npass" class="form-control"  placeholder="New Password">
 														</div>
 
-
-                            <div class="form-group">
-															<label for="address">
-																 Address
+<div class="form-group">
+															<label for="exampleInputPassword1">
+																Confirm Password
 															</label>
-					                    <textarea name="address" class="form-control"><?php echo htmlentities($data['address']);?></textarea>
+									<input type="password" name="cfpass" class="form-control"  placeholder="Confirm Password">
 														</div>
 
-                            <div class="form-group">
-															<label for="fess">
-																 Reciptionist Contact
-															</label>
-		                            <input type="text" name="reccontact" class="form-control" required="required"  value="<?php echo htmlentities($data['reccontact']);?>" >
-														</div>
-
-
-                          <div class="form-group">
-									            <label for="fess">
-																  Reciptionist Email
-															</label>
-					                      <input type="email" name="recemail" class="form-control"  readonly="readonly"  value="<?php echo htmlentities($data['recemail']);?>">
-													</div>
-
-													<?php
-                        }
-                         ?>
 
 
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
-															Update
+															Submit
 														</button>
 													</form>
 												</div>
@@ -137,16 +147,10 @@ $msg="Reciptionist Details updated Successfully";
 
 											</div>
 										</div>
-									<div class="col-lg-12 col-md-12">
-											<div class="panel panel-white">
 
-
-											</div>
-										</div>
-									</div>
 								</div>
 							</div>
-						</div>
+
 						<!-- end: BASIC EXAMPLE -->
 
 
@@ -161,8 +165,6 @@ $msg="Reciptionist Details updated Successfully";
 			</div>
 			<!-- start: FOOTER -->
 	<?php include('include/footer.php');?>
-			<!-- end: FOOTER -->
-
 
 		</div>
 		<!-- start: MAIN JAVASCRIPTS -->

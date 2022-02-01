@@ -1,4 +1,6 @@
-<?php error_reporting(0); ?>
+<?php
+error_reporting(0);
+?>
 
 <header class="navbar navbar-default navbar-static-top">
 	<!-- start: NAVBAR HEADER -->
@@ -42,6 +44,11 @@
 					<li>
 						<a href="edit-profile.php">
 							My Profile
+						</a>
+					</li>
+					<li>
+						<a href="change-password.php">
+							Change Password
 						</a>
 					</li>
 					<li>

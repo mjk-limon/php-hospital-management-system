@@ -8,12 +8,12 @@ check_login();
 ?>
 <?php
 if (isset($_POST['submit'])) {
-	$date = date($_POST["date"]);
+	$date = date("Y-m-d H:i:s", strtotime($_POST["date"]));
 	$sql = "INSERT INTO appointment (patid, docid, date, slno, status, prescription) ";
 	$sql .= "VALUES ('{$_POST["patid"]}', '{$_POST["docid"]}', '{$date}', 0, 0, \"\") ";
 	if ($con->query($sql) == true) {
 		echo "<script>
-				alert('Reciptionist info added Successfully');
+				alert('New appointment added Successfully');
 				window.location.href = 'rappointments.php';
 			</script>";
 	} else echo "<script>alert('" . addslashes($con->error) . "');</script>";
@@ -75,6 +75,12 @@ if (isset($_POST['submit'])) {
 					<div class="container-fluid container-fullw bg-white">
 						<div class="row">
 							<div class="col-md-12">
+							
+								<?php if (isset($_GET['msg'])) : ?>
+									<div class="alert alert-info">
+										<?php echo $_GET['msg']; ?>
+									</div>
+								<?php endif; ?>
 
 								<div class="row margin-top-30">
 									<div class="col-lg-8 col-md-12">
@@ -87,7 +93,8 @@ if (isset($_POST['submit'])) {
 												<form role="form" method="post" action="">
 													<div class="form-group">
 														<label for="patientname">Patient Name</label>
-														<select name="patid" class="form-control">
+														<select name="patid" class="form-control" required="true" autocomplete="off">\
+															<option value="">Select Patient</option>
 															<?php
 															$patient = get_all("patients");
 															if ($patient) {
@@ -98,11 +105,13 @@ if (isset($_POST['submit'])) {
 															}
 															mysqli_free_result($patient); ?>
 														</select>
+														<a href="add_patient.php?ref=r-new-appointment">Create New Patient</a>
 													</div>
 
 													<div class="form-group">
 														<label for="patientname">Doctor Name</label>
-														<select name="docid" class="form-control">
+														<select name="docid" class="form-control" required="true" autocomplete="off">
+															<option value="">Select Doctor</option>
 															<?php
 															$doctors = get_all("doctors");
 															if ($doctors) {
@@ -116,7 +125,7 @@ if (isset($_POST['submit'])) {
 													</div>
 													<div class="form-group">
 														<label>Select Date</label>
-														<input type="date" min="<?= date("Y-m-d"); ?>" name="date" value="<?= date("Y-m-d"); ?>" class="form-control" />
+														<input type="datetime-local" min="<?= date("Y-m-d H:i:s"); ?>" name="date" value="<?= date("Y-m-d H:i:s"); ?>" class="form-control" />
 													</div>
 													<button type="submit" name="submit" class="btn btn-o btn-primary">
 														Submit

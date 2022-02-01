@@ -11,6 +11,14 @@ if (isset($_POST["upload_report"])) {
     $InvId = $_POST["upload_report"];
 
     if (!empty($_FILES['report']['tmp_name'])) {
+		if ($ReportType == 'app') {
+			$sql = "UPDATE appointment SET status = '1' WHERE apid = '$InvId'";
+		} else {
+			$sql = "UPDATE test_bookings SET status = '2' WHERE id = '$InvId'";
+		}
+		
+		$con->query($sql);
+		
         $NewFile = "uploads/report-" . $ReportType . '-' . $InvId . ".pdf";
         if (move_uploaded_file($_FILES['report']['tmp_name'], $NewFile)) {
             $_SESSION['msg'] = 'Successfully uploaded report';
@@ -97,7 +105,7 @@ if (isset($_POST["upload_report"])) {
                                         if ($invoice) {
                                             while ($row = mysqli_fetch_assoc($invoice)) {
                                                 $Type = $row["qtype"];
-                                                $RepId = $row["id"];
+                                                $RepId = $Type . '-' . $row["id"];
                                                 $row2 = get_by_id("patients", "patid", $row["patid"]);
                                         ?>
                                                 <tr>
@@ -111,22 +119,28 @@ if (isset($_POST["upload_report"])) {
                                                         <?php if (file_exists("uploads/report-{$Type}-{$RepId}.pdf")) : ?>
                                                             <a href="<?php echo "uploads/report-{$Type}-{$RepId}.pdf" ?>" target="_blank" class="btn btn-primary">
                                                                 <i class="fa fa-file"></i>
-                                                                View Report
+                                                                View <?php echo $Type == 'app' ? 'Prescription' : 'Report' ?>
                                                             </a>
-                                                        <?php else : ?>
-                                                            <form action="" enctype="multipart/form-data" method="post">
-                                                                <input type="hidden" name="type" value="<?php echo $Type ?>" />
-                                                                <input type="hidden" name="upload_report" value="<?php echo $RepId ?>" />
-
-                                                                <div class="form-group">
-                                                                    <div class="btn btn-success btn-file">
-                                                                        Upload Report
-                                                                        <input name="report" type="file" accept="application/pdf" class="UploadImage" />
-                                                                    </div>
-                                                                </div>
-                                                            </form>
                                                         <?php endif; ?>
-                                                        
+                                                       
+														<form action="" enctype="multipart/form-data" method="post">
+															<input type="hidden" name="type" value="<?php echo $Type ?>" />
+															<input type="hidden" name="upload_report" value="<?php echo $RepId ?>" />
+
+															<div class="form-group" style="margin-top: .5rem">
+																<?php if (file_exists("uploads/report-{$Type}-{$RepId}.pdf")) : ?>
+																	<div class="btn btn-warning btn-sm btn-file">
+																		Modify <?php echo $Type == 'app' ? 'Prescription' : 'Report' ?>
+																		<input name="report" type="file" accept="application/pdf" class="UploadImage" />
+																	</div>
+																<?php else: ?>
+																	<div class="btn btn-success btn-file">
+																		Upload <?php echo $Type == 'app' ? 'Prescription' : 'Report' ?>
+																		<input name="report" type="file" accept="application/pdf" class="UploadImage" />
+																	</div>
+																<?php endif; ?>
+															</div>
+														</form>
                                                     </td>
                                                 </tr>
                                         <?php

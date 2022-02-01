@@ -77,7 +77,7 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 											<th>Patient ID</th>
 											<th>Patient Name</th>
 											<th>Doctor ID</th>
-											<th width="20%">Action</th>
+											<th width="20%">Prescription</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -92,8 +92,8 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 										?>
 												<tr>
 													<td> <?= $row["apid"]; ?></td>
-													<td><?= $row["date"]; ?> </td>
-													<td><?= ($row["status"] == 0) ? "no" : "yes"; ?> </td>
+													<td><?php echo date("j M, Y (h:iA)", strtotime($row['date'])); ?></td>
+													<td><?= ($row["status"] == 0) ? "Not seen" : "Prescribed"; ?> </td>
 													<td class="hide-on-small-only"> <?= $row["patid"]; ?></td>
 													<td class="hide-on-small-only"> <?= $row2["fullname"]; ?></td>
 													<td class="hide-on-small-only"> <?= $row3["id"]; ?></td>
@@ -103,10 +103,10 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 														</a-->
 														<?php if (file_exists("../receptionist/uploads/report-app-" . $row["apid"] . ".pdf")) : ?>
 															<a href="<?php echo "../receptionist/uploads/report-app-" . $row["apid"] . ".pdf" ?>" target="_blank" class="btn btn-success">
-																View Report
+																View Prescription
 															</a>
 														<?php else : ?>
-															Report Not Available
+															Prescription Not Available
 														<?php endif; ?>
 
 														<div style="margin-top: 10px;">

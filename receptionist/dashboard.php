@@ -7,14 +7,16 @@ check_login();
 <?php
 $result_pat    = $con->query("SELECT * FROM patients");
 $result_apnt    = $con->query("SELECT * FROM appointment");
+$result_tbooks    = $con->query("SELECT * FROM test_bookings");
 $total_patients = $result_pat->num_rows;
 $total_appointments = $result_apnt->num_rows;
+$total_test_books = $result_tbooks->num_rows;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Reciptionist | Dashboard</title>
+    <title>Receptionist | Dashboard</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -51,11 +53,11 @@ $total_appointments = $result_apnt->num_rows;
                     <section id="page-title">
                         <div class="row">
                             <div class="col-sm-8">
-                                <h1 class="mainTitle">Reciptionist | Dashboard</h1>
+                                <h1 class="mainTitle">Receptionist | Dashboard</h1>
                             </div>
                             <ol class="breadcrumb">
                                 <li>
-                                    <span>Reciptionist</span>
+                                    <span>Receptionist</span>
                                 </li>
                                 <li class="active">
                                     <span>Dashboard</span>
@@ -88,6 +90,20 @@ $total_appointments = $result_apnt->num_rows;
                                         <p class="cl-effect-1">
                                             <a href="rappointments.php">
                                                 Appointments
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+							<div class="col-sm-4">
+                                <div class="panel panel-white no-radius text-center">
+                                    <div class="panel-body">
+                                        <span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-paperclip fa-stack-1x fa-inverse"></i> </span>
+                                        <h2 class="StepTitle">Total Test Bookings<span class="label label-danger"><?= $total_test_books ?></span></h2>
+
+                                        <p class="cl-effect-1">
+                                            <a href="rtest_bookings.php">
+                                                Test Bookings
                                             </a>
                                         </p>
                                     </div>

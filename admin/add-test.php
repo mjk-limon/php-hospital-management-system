@@ -4,25 +4,24 @@ session_start();
 include('include/config.php');
 include('include/checklogin.php');
 check_login();
-$did=intval($_GET['id']);
-if(isset($_POST['submit']))
-{
-	$recname=$_POST['recipName'];
-	$address=$_POST['address'];
-	$reccontact=$_POST['reccontact'];
-	$recemail=$_POST['recemail'];
-$sql=mysqli_query($con,"Update reciptionist set recipName='$recname',address='$address',reccontact='$reccontact',recemail='$recemail', where id='$did'");
-if($sql)
-{
-$msg="Reciptionist Details updated Successfully";
-
-}
+if(isset($_POST['submit'])){
+	$testname = $_POST['testname'];
+	$price = $_POST['price'];
+	 
+	$sql=mysqli_query($con,"INSERT INTO tests(testname, price, template) VALUES ('$testname','$price', '')");
+	
+	if($sql){
+		echo "<script>alert('Test info added Successfully');</script>";
+		echo "<script>window.location='manage-tests.php'</script>";
+	} else {
+		echo "<script>alert('".addslashes($con->error)."');</script>";
+	}
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Admin | Edit Reciptionist Details</title>
+		<title>Admin | Add Test</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -43,15 +42,27 @@ $msg="Reciptionist Details updated Successfully";
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-
+<script type="text/javascript">
+function valid()
+{
+ if(document.adddoc.npass.value!= document.adddoc.cfpass.value)
+{
+alert("Password and Confirm Password Field do not match  !!");
+document.adddoc.cfpass.focus();
+return false;
+}
+return true;
+}
+</script>
 
 	</head>
 	<body>
-		<div id="app">
-      <?php include('include/sidebar.php');?>
-			  <div class="app-content">
+		<div id="app">		
+<?php include('include/sidebar.php');?>
+			<div class="app-content">
+				
 						<?php include('include/header.php');?>
-
+						
 				<!-- end: TOP NAVBAR -->
 				<div class="main-content" >
 					<div class="wrap-content container" id="container">
@@ -59,16 +70,16 @@ $msg="Reciptionist Details updated Successfully";
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Admin | Edit Reciptionist Details</h1>
+									<h1 class="mainTitle">Admin | Add Test</h1>
 								</div>
-    								<ol class="breadcrumb">
-    									<li>
-    										<span>Admin</span>
-    									</li>
-    									<li class="active">
-    										<span>Edit Reciptionist Details</span>
-    									</li>
-    								</ol>
+								<ol class="breadcrumb">
+									<li>
+										<span>Admin</span>
+									</li>
+									<li class="active">
+										<span>Add Test</span>
+									</li>
+								</ol>
 							</div>
 						</section>
 						<!-- end: PAGE TITLE -->
@@ -76,71 +87,45 @@ $msg="Reciptionist Details updated Successfully";
 						<div class="container-fluid container-fullw bg-white">
 							<div class="row">
 								<div class="col-md-12">
-									<h5 style="color: green; font-size:18px; ">
-                    <?php if($msg) { echo htmlentities($msg);}?> </h5>
-									     <div class="row margin-top-30">
-										      <div class="col-lg-8 col-md-12">
-											      <div class="panel panel-white">
-      												<div class="panel-heading">
-      													<h5 class="panel-title">Edit reciptionist info</h5>
-      												</div>
+									
+									<div class="row margin-top-30">
+										<div class="col-lg-8 col-md-12">
+											<div class="panel panel-white">
+												<div class="panel-heading">
+													<h5 class="panel-title">Add Test</h5>
+												</div>
 												<div class="panel-body">
-									          <?php $sql=mysqli_query($con,"select * from reciptionist where id='$did'");
-                              while($data=mysqli_fetch_array($sql))
-                              {
-                            ?>
+									
 													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
-
-
-                            <div class="form-group">
+														<div class="form-group">
 															<label for="doctorname">
-																 Reciptionist Name
+																Test Name
 															</label>
-	                             <input type="text" name="recipName" class="form-control" value="<?php echo htmlentities($data['recipName']);?>" >
+															<input type="text" name="testname" class="form-control"  placeholder="Enter Test Name" required="required">
 														</div>
-
-
-                            <div class="form-group">
-															<label for="address">
-																 Address
+														
+														<div class="form-group">
+															<label for="doctorname">
+																Test Price
 															</label>
-					                    <textarea name="address" class="form-control"><?php echo htmlentities($data['address']);?></textarea>
+															<input type="text" name="price" class="form-control"  placeholder="Enter Test Price" required="required">
 														</div>
-
-                            <div class="form-group">
-															<label for="fess">
-																 Reciptionist Contact
-															</label>
-		                            <input type="text" name="reccontact" class="form-control" required="required"  value="<?php echo htmlentities($data['reccontact']);?>" >
-														</div>
-
-
-                          <div class="form-group">
-									            <label for="fess">
-																  Reciptionist Email
-															</label>
-					                      <input type="email" name="recemail" class="form-control"  readonly="readonly"  value="<?php echo htmlentities($data['recemail']);?>">
-													</div>
-
-													<?php
-                        }
-                         ?>
-
-
+														
+														
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
-															Update
+															Submit
 														</button>
 													</form>
 												</div>
 											</div>
 										</div>
-
+											
 											</div>
 										</div>
 									<div class="col-lg-12 col-md-12">
 											<div class="panel panel-white">
-
-
+												
+												
 											</div>
 										</div>
 									</div>
@@ -148,22 +133,25 @@ $msg="Reciptionist Details updated Successfully";
 							</div>
 						</div>
 						<!-- end: BASIC EXAMPLE -->
-
-
-
-
-
-
+			
+					
+					
+						
+						
+					
 						<!-- end: SELECT BOXES -->
-
+						
 					</div>
 				</div>
 			</div>
 			<!-- start: FOOTER -->
 	<?php include('include/footer.php');?>
 			<!-- end: FOOTER -->
-
-
+		
+			<!-- start: SETTINGS -->
+	<?php include('include/setting.php');?>
+			<>
+			<!-- end: SETTINGS -->
 		</div>
 		<!-- start: MAIN JAVASCRIPTS -->
 		<script src="vendor/jquery/jquery.min.js"></script>

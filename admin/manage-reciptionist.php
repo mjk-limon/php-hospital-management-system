@@ -77,9 +77,9 @@ if(isset($_GET['del']))
         										<thead>
         											<tr>
         												<th class="center">#</th>
-        												<th class="hidden-xs">reciptionist name</th>
-                                <th>address</th>
-                                <th>reccontact </th>
+        												<th class="hidden-xs">Reciptionist Name</th>
+                                <th>Address</th>
+                                <th>Contact </th>
         												<th>Action</th>
 
         											</tr>

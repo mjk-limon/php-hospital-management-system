@@ -1,12 +1,17 @@
-<?php error_reporting(0); ?>
+<?php
+error_reporting(0);
+?>
+
 <header class="navbar navbar-default navbar-static-top">
 	<!-- start: NAVBAR HEADER -->
 	<div class="navbar-header">
 		<a href="#" class="sidebar-mobile-toggler pull-left hidden-md hidden-lg" class="btn btn-navbar sidebar-toggle" data-toggle-class="app-slide-off" data-toggle-target="#app" data-toggle-click-outside="#sidebar">
 			<i class="ti-align-justify"></i>
 		</a>
-		<a class="navbar-brand" href="#">
-			<h2 style="padding-top:2% ">HMS</h2>
+		<a style="float:left" href="#">
+			<h2 style="padding-top:2%;height:100%;">
+				<img src="../img/2.jpg" alt="" style="display:inline-block;height:95%">
+			</h2>
 		</a>
 		<a href="#" class="sidebar-toggler pull-right visible-md visible-lg" data-toggle-class="app-sidebar-closed" data-toggle-target="#app">
 			<i class="ti-align-justify"></i>
@@ -22,16 +27,16 @@
 		<ul class="nav navbar-right">
 			<!-- start: MESSAGES DROPDOWN -->
 			<li style="padding-top:2% ">
-				<h2>eHospital</h2>
+				<h2>E-Hospital</h2>
 			</li>
 
 
 			<li class="dropdown current-user">
 				<a href class="dropdown-toggle" data-toggle="dropdown">
-					<img src="assets/images/avatar-1.jpg" alt="Peter"> <span class="username">
-						<?php $query = mysqli_query($con, "select fullName from users where id='" . $_SESSION['id'] . "'");
+					<span class="username">
+						<?php $query = mysqli_query($con, "select recipName from reciptionist where id='" . $_SESSION['id'] . "'");
 						while ($row = mysqli_fetch_array($query)) {
-							echo $row['fullName'];
+							echo $row['recipName'];
 						}
 						?> <i class="ti-angle-down"></i></i></span>
 				</a>

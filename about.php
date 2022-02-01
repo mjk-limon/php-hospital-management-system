@@ -30,6 +30,8 @@
         <div class="content">
             <div class="ct-title">About Us</div>
             <div class="ct-body">
+				<h2>Sunflower Hospital Ltd</h2>
+				
                 <p>People tend to think that "About Us" pages have to sound formal to gain credibility and trust. But most people find it easier to trust real human beings, rather than a description that sounds like it came from an automaton. Trying to sound too professional on your "About Us" page results in stiff, “safe” copy and design -- the perfect way to make sure your company blends in with the masses.</p>
 
                 <p>Instead, Eight Hour Day showcases the people behind the company and humanizes its brand. Introducing the founders by name and featuring the photos of them on the "About Us" page drives home the point that Nathan and Katie are -- as they so astutely put it -- "two individuals with a passion for creativity -- creativity makes us happy."</p>
@@ -39,6 +41,10 @@
                 <p>We know -- no industry jargon. If you think it makes you sound super smart on your "About Us" page, think again. People want and appreciate straight talk about what your business does. After all, if people can't figure out what you do, how will they know they need your product or service?</p>
 
                 <p>So, skip the industry lingo -- that's what Apptopia does on its "About Us" page. The startup's simple but polished language effectively communicates the company's offering while still allowing the Average Joe to understand it.</p>
+				
+				<p>Hutapara, Gazipur District, Dhaka - Mymensingh Hwy, Dhaka</p>
+				
+				<p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3641.367999545849!2d90.4096243461713!3d24.12371124967208!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755d98d763d1941%3A0xdfe1cb36e21188b6!2sSunflower%20Hospital!5e0!3m2!1sen!2sbd!4v1642841367411!5m2!1sen!2sbd" style="display:block; border:0;width:50%;height:400px; margin:0 auto" allowfullscreen="" loading="lazy"></iframe></p>
             </div>
         </div>
 

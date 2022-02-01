@@ -87,7 +87,7 @@ if (isset($_GET['del'])) {
 														<label for="exampleInputEmail1">
 															Doctor Specialization
 														</label>
-														<input type="text" name="doctorspecilization" class="form-control" placeholder="Enter Doctor Specialization">
+														<input type="text" name="doctorspecilization" class="form-control" placeholder="Enter Doctor Specialization" required="required">
 													</div>
 
 

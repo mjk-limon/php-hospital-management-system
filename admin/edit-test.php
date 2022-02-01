@@ -5,24 +5,19 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 $did=intval($_GET['id']);
-if(isset($_POST['submit']))
-{
-	$recname=$_POST['recipName'];
-	$address=$_POST['address'];
-	$reccontact=$_POST['reccontact'];
-	$recemail=$_POST['recemail'];
-$sql=mysqli_query($con,"Update reciptionist set recipName='$recname',address='$address',reccontact='$reccontact',recemail='$recemail', where id='$did'");
-if($sql)
-{
-$msg="Reciptionist Details updated Successfully";
-
-}
+if(isset($_POST['submit'])) {
+	$testname=$_POST['testname'];
+	$price=$_POST['price'];
+	$sql=mysqli_query($con,"Update tests set testname='$testname',price='$price' where testid='$did'");
+	if($sql){
+		$msg="Test Details updated Successfully";
+	}
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Admin | Edit Reciptionist Details</title>
+		<title>Admin | Edit Test Details</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,14 +54,14 @@ $msg="Reciptionist Details updated Successfully";
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Admin | Edit Reciptionist Details</h1>
+									<h1 class="mainTitle">Admin | Edit Test Details</h1>
 								</div>
     								<ol class="breadcrumb">
     									<li>
     										<span>Admin</span>
     									</li>
     									<li class="active">
-    										<span>Edit Reciptionist Details</span>
+    										<span>Edit Test Details</span>
     									</li>
     								</ol>
 							</div>
@@ -82,49 +77,32 @@ $msg="Reciptionist Details updated Successfully";
 										      <div class="col-lg-8 col-md-12">
 											      <div class="panel panel-white">
       												<div class="panel-heading">
-      													<h5 class="panel-title">Edit reciptionist info</h5>
+      													<h5 class="panel-title">Edit Test info</h5>
       												</div>
 												<div class="panel-body">
-									          <?php $sql=mysqli_query($con,"select * from reciptionist where id='$did'");
-                              while($data=mysqli_fetch_array($sql))
-                              {
-                            ?>
 													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
-
-
-                            <div class="form-group">
-															<label for="doctorname">
-																 Reciptionist Name
-															</label>
-	                             <input type="text" name="recipName" class="form-control" value="<?php echo htmlentities($data['recipName']);?>" >
-														</div>
-
-
-                            <div class="form-group">
-															<label for="address">
-																 Address
-															</label>
-					                    <textarea name="address" class="form-control"><?php echo htmlentities($data['address']);?></textarea>
-														</div>
-
-                            <div class="form-group">
-															<label for="fess">
-																 Reciptionist Contact
-															</label>
-		                            <input type="text" name="reccontact" class="form-control" required="required"  value="<?php echo htmlentities($data['reccontact']);?>" >
-														</div>
-
-
-                          <div class="form-group">
-									            <label for="fess">
-																  Reciptionist Email
-															</label>
-					                      <input type="email" name="recemail" class="form-control"  readonly="readonly"  value="<?php echo htmlentities($data['recemail']);?>">
-													</div>
-
 													<?php
-                        }
-                         ?>
+														$sql=mysqli_query($con,"select * from tests where testid='$did'");
+														while($data=mysqli_fetch_array($sql)) {
+													?>
+															<div class="form-group">
+																<label for="doctorname">
+																	 Test Name
+																</label>
+																<input type="text" name="testname" class="form-control" value="<?php echo htmlentities($data['testname']);?>" >
+															</div>
+
+
+															<div class="form-group">
+																<label for="address">
+																	Test Price
+																</label>
+																<input type="text" name="price" class="form-control" value="<?php echo htmlentities($data['price']);?>" >
+															</div>
+
+														<?php
+															}
+														?>
 
 
 														<button type="submit" name="submit" class="btn btn-o btn-primary">

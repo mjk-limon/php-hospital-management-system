@@ -6,21 +6,17 @@
 	check_login();
 ?>
 <?php
-	$result_all	= $con->query("SELECT * FROM appointment");
+	$result_all	= $con->query("SELECT * FROM test_bookings");
 	$tna = $result_all->num_rows;
 	$page = isset($_GET['page']) ? $_GET['page'] :  1;
 	$offset = (($page * 10) - 10); $looplimit = $tna/10;
 	$looplimit = (is_float($looplimit)) ? intval($looplimit)+1 : $looplimit;
-	$result_app	= $con->query("SELECT * FROM appointment ORDER BY apid DESC LIMIT 10 OFFSET {$offset}");
-	if(isset($_GET['delete'])) {
-		$con->query("DELETE FROM appointment WHERE patid='{$_GET['delete']}'");
-		echo "<script>alert('Successfully Deleted !');</script>";
-	}
+	$result_app	= $con->query("SELECT * FROM test_bookings ORDER BY id DESC LIMIT 10 OFFSET {$offset}");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Reciptionist | Appointment History</title>
+    <title>Reciptionist | Test Booking History</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -51,13 +47,13 @@
 				<div class="wrap-content container" id="container">
 					<section id="page-title">
 						<div class="row">
-							<div class="col-sm-8"><h1 class="mainTitle">Reciptionist | Appointment History</h1></div>
+							<div class="col-sm-8"><h1 class="mainTitle">Reciptionist | Test Booking History</h1></div>
 							<ol class="breadcrumb">
 								<li>
 									<span>Receptionist</span>
 								</li>
 								<li class="active">
-									<span>Appointment History</span>
+									<span>Test Booking History</span>
 								</li>
 							</ol>
 						</div>
@@ -66,44 +62,46 @@
 						<div class="row">
 							<div class="col-md-12">
 									<p class="button text-right">
-										<a href="r-new-appointment.php" class="btn btn-primary" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Create New Appointment</a>
+										<a href="r-new-test.php" class="btn btn-primary" role="button" aria-pressed="true"><i class="fa fa-plus"></i> Create New Test Booking</a>
 									</p>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<h5 class="over-title margin-bottom-15">Appointments</span></h5>
+								<h5 class="over-title margin-bottom-15">Test Bookings</span></h5>
 								<p style="color:red;"><?php echo htmlentities($_SESSION['msg']); $_SESSION['msg']=""; ?></p>
 								<table class="table table-hover" id="sample-table-1">
 									<thead>
 										<tr>
-											<th>Appointment Id</th>
+											<th>Book Id</th>
 											<th>Date</th>
 											<th>Patient Name</th>
-											<th>Doctor Name</th>
+											<th>Test Name</th>
 											<th>Status</th>
 										</tr>
 									</thead>
 									<tbody>
 									<?php
-										while($row = $result_app->fetch_array()) {
-										$result_pn	= $con->query("SELECT * FROM patients WHERE patid = '".addslashes($row['patid'])."'");
-										$name	= $result_pn->fetch_array();
-										$result_dn	= $con->query("SELECT * FROM doctors WHERE id = '".addslashes($row['docid'])."'");
-										$dName	= $result_dn->fetch_array();
-
+										while($row = $result_app->fetch_assoc()) {
+											// echo '<pre>'; print_r($row); exit;
+											$result_pn	= $con->query("SELECT * FROM patients WHERE patid = '".addslashes($row['userid'])."'");
+											$name	= $result_pn->fetch_array();
+											$result_dn	= $con->query("SELECT * FROM tests WHERE testid = '".addslashes($row['testid'])."'");
+											$dName	= $result_dn->fetch_array();
 									?>
 										<tr>
-											<td><?= $row["apid"]; ?></td>
-											<td><?php echo date("j M, Y (h:iA)", strtotime($row['date'])); ?></td>
+											<td><?= $row["id"]; ?></td>
+											<td><?php echo date("j M, Y (h:iA)", strtotime($row['bookdate'])); ?></td>
 											<td><?= $name['fullname']; ?></td>
-											<td><?= $dName['doctorName']; ?></td>
-											<td><?= ($row["status"] == 0) ? "Not seen" : "Prescribed"; ?></td>
+											<td><?= $dName['testname']; ?></td>
+											<td><?= ($row["status"] == 1) ? "Not seen" : "Report Uploaded"; ?></td>
 										</tr>
 									<?php } ?>
+									
 									</tbody>
 								</table>
 								<!-- Compulsory Paging Code -->
+								
 								<?php
 									$prev_page = ($page == 1) ? 1 : $page-1;
 									$next_page = ($page == $looplimit) ? $looplimit : $page+1;

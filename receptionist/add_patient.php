@@ -4,16 +4,21 @@ session_start();
 include('include/config.php');
 include('include/checklogin.php');
 check_login();
+
+$Ref = isset($_GET['ref']) ? $_GET['ref'] : 'add_patient';
 if(isset($_POST['submit'])){
-	$recname=$_POST['recname'];
-	$address=$_POST['address'];
-	$reccontact=$_POST['reccontact'];
-	$recemail=$_POST['recemail'];
-	$password=md5($_POST['npass']);
-	$sql=mysqli_query($con,"INSERT INTO reciptionist(recipName,address,reccontact,recemail,password,updationDate) VALUES ('$recname','$address','$reccontact','$recemail','$password', '')");
+	$fullname = $_POST['fullname'];
+	$gender = $_POST['gender'];
+	$age = $_POST['age'];
+	$address = $_POST['address'];
+	$phone = $_POST['phone'];
+	$blood_group = $_POST['blood_group'];
+	$email = $_POST['email'];
+	$password = md5($_POST['npass']);
+	
+	$sql=mysqli_query($con, "INSERT INTO patients(fullname,gender,age,address,phone,datetime,blood_group,email,password) VALUES ('$fullname','$gender','$age','$address','$phone','$datetime','$blood_group','$email','$password')");
 	if($sql){
-		echo "<script>alert('Reciptionist info added Successfully');</script>";
-		header('location:manage-reciptionist.php');
+		header('location: ' . $Ref . '.php?msg=' . urlencode("Successfully admitted patient!"));
 	} else {
 		echo "<script>alert('".addslashes($con->error)."');</script>";
 	}
@@ -22,7 +27,7 @@ if(isset($_POST['submit'])){
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Admin | Add Doctor</title>
+		<title>receptionist | Add patients</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,9 +64,9 @@ return true;
 	</head>
 	<body>
 		<div id="app">
-        <?php include('include/sidebar.php');?>
-			     <div class="app-content">
-						       <?php include('include/header.php');?>
+       <?php include('include/sidebar.php');?>
+			  <div class="app-content">
+			<?php include('include/header.php');?>
 
 				<!-- end: TOP NAVBAR -->
 				<div class="main-content" >
@@ -70,14 +75,14 @@ return true;
       						<section id="page-title">
       							<div class="row">
           								<div class="col-sm-8">
-          									<h1 class="mainTitle">Admin | Add Reciptionist</h1>
+          									<h1 class="mainTitle">Receptionist | Add Patients</h1>
           								</div>
             								<ol class="breadcrumb">
             									<li>
-            										<span>Admin</span>
+            										<span>Receptionist</span>
             									</li>
             									<li class="active">
-            										<span>Add Reciptionist</span>
+            										<span>Add Patients</span>
             									</li>
             								</ol>
       							</div>
@@ -91,40 +96,62 @@ return true;
 										<div class="col-lg-8 col-md-12">
 											<div class="panel panel-white">
 												<div class="panel-heading">
-													<h5 class="panel-title">Add Reciptionist</h5>
+													<h5 class="panel-title">Add Patients</h5>
 												</div>
 												<div class="panel-body">
 
-													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
+													<form role="form" name="addpatient" method="post" onSubmit="return valid();">
 											       <div class="form-group">
-															    <label for="doctorname">
-																      Reciptionist Name
+															    <label for="patientname">
+																      Patient Name
 															    </label>
-					                         <input type="text" name="recname" class="form-control"  placeholder="Enter reciptionist Name" required="required">
+					                         <input type="text" name="fullname" class="form-control"  placeholder="Enter Patients Name">
 														</div>
+
+                            <div class="form-group">
+                                <label for="gender">
+                                    Gender
+                                </label>
+								<select name="gender" class="form-control">
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="age">
+                                    Age
+                                </label>
+                                 <input type="text" name="age" class="form-control"  placeholder="Enter Patients age">
+                            </div>
 
 
                           <div class="form-group">
 															<label for="address">
-																 Reciptionist Address
+																 Address
 															</label>
-					                       <textarea name="address" class="form-control"  placeholder="Enter reciptionist Address" required="required"></textarea>
-													</div>
-
-
-
-                          <div class="form-group">
-									             <label for="fess">
-																 Reciptionist Contact no
-															 </label>
-					                        <input type="text" name="reccontact" class="form-control"  placeholder="Enter reciptionist Contact no" required="required">
+					                       <textarea name="address" class="form-control"  placeholder="Enter Patients Address"></textarea>
 													</div>
 
                           <div class="form-group">
-									            <label for="fess">
-																 Reciptionist Email
+                              <label for="phone">
+                                 phone
+                              </label>
+                                 <textarea name="phone" class="form-control"  placeholder="Enter Patients phone"></textarea>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="blood_group">
+                                 blood group
+                              </label>
+                                 <textarea name="blood_group" class="form-control"  placeholder="Enter Patients blood_group"></textarea>
+                          </div>
+
+                          <div class="form-group">
+									            <label for="email">
+																 Patient Email
 															</label>
-					                       <input type="email" name="recemail" class="form-control"  placeholder="Enter reciptionist Email id">
+					                       <input type="email" name="email" class="form-control"  placeholder="Enter patient Email id">
 													</div>
 
 														<div class="form-group">
@@ -133,15 +160,6 @@ return true;
 															  </label>
 					                         <input type="password" name="npass" class="form-control"  placeholder="New Password" required="required">
 														</div>
-
-                            <div class="form-group">
-															<label for="exampleInputPassword2">
-																Confirm Password
-															</label>
-									               <input type="password" name="cfpass" class="form-control"  placeholder="Confirm Password" required="required">
-														</div>
-
-
 
 														<button type="submit" name="submit" class="btn btn-o btn-primary">
 															Submit

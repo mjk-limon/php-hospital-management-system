@@ -90,7 +90,7 @@
 					<ul class="sub-menu">
 						<li>
 							<a href="manage-users.php">
-								<span class="title"> Manage Patients </span>
+								<span class="title"> View Patients </span>
 							</a>
 						</li>
 					</ul>
@@ -116,6 +116,30 @@
 						<li>
 							<a href="manage-reciptionist.php">
 								<span class="title"> Manage Reciptionist </span>
+							</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:void(0)">
+						<div class="item-content">
+							<div class="item-media">
+								<i class="ti-support"></i>
+							</div>
+							<div class="item-inner">
+								<span class="title"> Tests </span><i class="icon-arrow"></i>
+							</div>
+						</div>
+					</a>
+					<ul class="sub-menu">
+						<li>
+							<a href="add-test.php">
+								<span class="title"> Add Test </span>
+							</a>
+						</li>
+						<li>
+							<a href="manage-tests.php">
+								<span class="title"> Manage Tests </span>
 							</a>
 						</li>
 					</ul>

@@ -54,14 +54,14 @@ echo "<script>alert('Receptionist details updated Successfully');</script>";
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Receptionint | Edit receptionist Details</h1>
+									<h1 class="mainTitle">Receptionist | Edit Receptionist Details</h1>
 																	</div>
 								<ol class="breadcrumb">
 									<li>
-										<span>Receptionint</span>
+										<span>Receptionist</span>
 									</li>
 									<li class="active">
-										<span>Edit Receptionint Details</span>
+										<span>Edit Receptionist Details</span>
 									</li>
 								</ol>
 							</div>
@@ -76,7 +76,7 @@ echo "<script>alert('Receptionist details updated Successfully');</script>";
 										<div class="col-lg-8 col-md-12">
 											<div class="panel panel-white">
 												<div class="panel-heading">
-													<h5 class="panel-title">Edit Receptionint</h5>
+													<h5 class="panel-title">Edit Receptionist</h5>
 												</div>
 												<div class="panel-body">
 												<?php $sql=mysqli_query($con,"select * from reciptionist where recemail='".$_SESSION['rlogin']."'");

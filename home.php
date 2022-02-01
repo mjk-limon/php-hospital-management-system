@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <div class="bgimage">
+    <div class="bgimage" style="height:640px">
         <div class="menu">
             <div class="leftmenu">
                 <img src="img/2.jpg">

@@ -54,18 +54,18 @@ if (isset($_POST['submit'])) {
 					<input type="hidden" name="submit" />
 					<h2>Patient Registration</h2><br>
 
-					<input type="text" class="form-control" name="fullname" placeholder="Full name" />
+					<input type="text" class="form-control" name="fullname" placeholder="Full name" required="required"/>
 					<select name="gender" class="form-control">
 						<option value="Male">Male</option>
 						<option value="Female">Female</option>
 						<option value="Others">Others</option>
 					</select>
-					<input type="number" class="form-control" name="age" placeholder="Age" />
-					<textarea class="form-control" name="address" placeholder="Address"></textarea>
-					<input type="text" class="form-control" name="phone" placeholder="Phone number" />
-					<input type="text" class="form-control" name="blood_group" placeholder="Blood Group" />
-					<input type="text" class="form-control" name="username" placeholder="Email Address" />
-					<input type="password" class="form-control password" name="password" placeholder="Password" />
+					<input type="number" class="form-control" name="age" placeholder="Age" required="required"/>
+					<textarea class="form-control" name="address" placeholder="Address"required="required"></textarea>
+					<input type="text" class="form-control" name="phone" placeholder="Phone number" required="required"/>
+					<input type="text" class="form-control" name="blood_group" placeholder="Blood Group" required="required"/>
+					<input type="email" class="form-control" name="username" placeholder="Email Address" required="required"/>
+					<input type="password" class="form-control password" name="password" placeholder="Password" required="required"/>
 					<button>Submit</button>
 				</form><br />
 				<a href="plogin.php">Login</a>

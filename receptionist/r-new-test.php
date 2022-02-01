@@ -8,7 +8,7 @@ check_login();
 ?>
 <?php
 if (isset($_POST['submit'])) {
-    $DateStamp = date("Y-m-d", strtotime($_POST["date"]));
+    $DateStamp = date("Y-m-d H:i:s", strtotime($_POST["date"]));
 
     $InsertQuery = "INSERT INTO test_bookings (userid, testid, bookdate, status) ";
     $InsertQuery .= "VALUES ('{$_POST["patid"]}', '{$_POST["testid"]}', '$DateStamp', '1') ";
@@ -81,6 +81,12 @@ if (isset($_POST['submit'])) {
                         <div class="row">
                             <div class="col-md-12">
 
+								<?php if (isset($_GET['msg'])) : ?>
+									<div class="alert alert-info">
+										<?php echo $_GET['msg']; ?>
+									</div>
+								<?php endif; ?>
+								
                                 <div class="row margin-top-30">
                                     <div class="col-lg-8 col-md-12">
                                         <div class="panel panel-white">
@@ -92,7 +98,8 @@ if (isset($_POST['submit'])) {
                                                 <form role="form" method="post" action="">
                                                     <div class="form-group">
                                                         <label for="patientname">Patient Name</label>
-                                                        <select name="patid" class="form-control">
+                                                        <select name="patid" class="form-control" required="true" autocomplete="off">
+															<option value="">Select Patient</option>
                                                             <?php
                                                             $patient = get_all("patients");
                                                             if ($patient) {
@@ -107,11 +114,13 @@ if (isset($_POST['submit'])) {
                                                             mysqli_free_result($patient);
                                                             ?>
                                                         </select>
+														<a href="add_patient.php?ref=r-new-test">Create New Patient</a>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="patientname">Test Name</label>
-                                                        <select name="testid" class="form-control">
+                                                        <select name="testid" class="form-control" required="true" autocomplete="off">
+															<option value="">Select Test</option>
                                                             <?php
                                                             $tests = get_all("tests");
                                                             if ($tests) {
@@ -128,7 +137,7 @@ if (isset($_POST['submit'])) {
 
                                                     <div class="form-group">
                                                         <label>Select Date</label>
-                                                        <input type="date" min="<?= date("Y-m-d"); ?>" name="date" value="<?= date("Y-m-d"); ?>" class="form-control" />
+                                                        <input type="datetime-local" min="<?= date("Y-m-d H:i:s"); ?>" name="date" value="<?= date("Y-m-d H:i:s"); ?>" class="form-control datetime" />
                                                     </div>
 
                                                     <button type="submit" name="submit" class="btn btn-o btn-primary">

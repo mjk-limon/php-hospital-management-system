@@ -110,8 +110,8 @@ if (isset($_GET['del'])) {
                                         ?>
                                                 <tr>
                                                     <td><?= $row["id"]; ?></td>
-                                                    <td><?= $row["bookdate"]; ?> </td>
-                                                    <td><?= ($row["status"] == 1) ? "no" : "yes"; ?> </td>
+                                                    <td><?php echo date("j M, Y (h:iA)", strtotime($row['bookdate'])); ?></td>
+                                                    <td><?= ($row["status"] == 1) ? "Not seen" : "Report Uploaded"; ?> </td>
                                                     <td class="hide-on-small-only"> <?= $row2["fullname"]; ?></td>
                                                     <td class="hide-on-small-only"> <?= $row3["testname"]; ?></td>
                                                 </tr>

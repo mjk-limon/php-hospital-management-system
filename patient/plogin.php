@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 				<form class="login-form" method="post">
 					<input type="hidden" name="submit" />
 					<h2>Patient Login</h2><br>
-					<input type="text" class="form-control" name="username" placeholder="user name" />
+					<input type="text" class="form-control" name="username" placeholder="Email" />
 					<input type="password" class="form-control password" name="password" placeholder="password" />
 					<button>Submit</button>
 				</form><br />

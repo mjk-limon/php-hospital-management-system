@@ -110,8 +110,8 @@ if (isset($_GET['del'])) {
                                         ?>
                                                 <tr>
                                                     <td> <?= $row["apid"]; ?></td>
-                                                    <td><?= $row["date"]; ?> </td>
-                                                    <td><?= ($row["status"] == 0) ? "no" : "yes"; ?> </td>
+                                                    <td><?php echo date("j M, Y (h:iA)", strtotime($row['date'])); ?></td>
+                                                    <td><?= ($row["status"] == 0) ? "Not seen" : "Pescribed"; ?> </td>
                                                     <td class="hide-on-small-only"> <?= $row["patid"]; ?></td>
                                                     <td class="hide-on-small-only"> <?= $row2["fullname"]; ?></td>
                                                     <td class="hide-on-small-only"> <?= $row3["id"]; ?></td>

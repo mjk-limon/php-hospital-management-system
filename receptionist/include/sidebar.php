@@ -30,13 +30,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="r-new-test.php">
+                    <a href="rtest_bookings.php">
                         <div class="item-content">
                             <div class="item-media">
                                 <i class="ti-list"></i>
                             </div>
                             <div class="item-inner">
-                                <span class="title"> New Test Booking</span>
+                                <span class="title"> Test Bookings</span>
                             </div>
                         </div>
                     </a>
@@ -48,7 +48,7 @@
                                 <i class="ti-list"></i>
                             </div>
                             <div class="item-inner">
-                                <span class="title"> Invoice </span>
+                                <span class="title"> Report/Prescription </span>
                             </div>
                         </div>
                     </a>

@@ -17,7 +17,7 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 <html lang="en">
 
 <head>
-	<title>Patient | Appointment History</title>
+	<title>Patient | Test Booking History</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,14 +50,14 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 					<section id="page-title">
 						<div class="row">
 							<div class="col-sm-8">
-								<h1 class="mainTitle">Patient | Appointment History</h1>
+								<h1 class="mainTitle">Patient | Test Booking History</h1>
 							</div>
 							<ol class="breadcrumb">
 								<li>
 									<span>Patient</span>
 								</li>
 								<li class="active">
-									<span>Appointment History</span>
+									<span>Test Booking History</span>
 								</li>
 							</ol>
 						</div>
@@ -77,7 +77,7 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 											<th>Status</th>
 											<th>Patient Name</th>
 											<th>Test Name</th>
-											<th>Action</th>
+											<th>Report</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -92,8 +92,8 @@ $result_patid = $con->query("SELECT patid FROM patients WHERE email = '" . trim(
 										?>
 												<tr>
 													<td><?= $row["id"]; ?></td>
-													<td><?= $row["bookdate"]; ?> </td>
-													<td><?= ($row["status"] == 1) ? "no" : "yes"; ?> </td>
+													<td><?php echo date("j M, Y (h:iA)", strtotime($row['bookdate'])); ?></td>
+													<td><?= ($row["status"] == 1) ? "Not seen" : "Report Uploaded"; ?> </td>
 													<td class="hide-on-small-only"> <?= $row2["fullname"]; ?></td>
 													<td class="hide-on-small-only"> <?= $row3["testname"]; ?></td>
 													<td>

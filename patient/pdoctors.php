@@ -100,6 +100,7 @@ if (isset($_GET["t"])) {
     $post_data['value_a'] = $_GET['t'];
     $post_data['value_b'] = $_SESSION['id'];
     $post_data['value_c'] = 'pdoctors';
+    $post_data['value_d'] = date("Y-m-d H:i:s", strtotime($_GET["date"] . " " . explode("-", $_GET['time'])[0]));
 
     # SPECIAL PARAM
     $post_data['tokenize_id'] = "1";
@@ -142,6 +143,7 @@ if (isset($_GET["msg"])) {
     <link href="vendor/select2/select2.min.css" rel="stylesheet" media="screen">
     <link href="vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
     <link href="vendor/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
+    <link href="vendor/loader/waitMe.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/plugins.css">
     <link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
@@ -173,7 +175,8 @@ if (isset($_GET["msg"])) {
                         <div class="row">
                             <div class="col-md-12">
                                 <h5 class="over-title margin-bottom-15">Doctors</h5>
-                                <p style="color:red;"><?php echo htmlentities($_SESSION['msg']); $_SESSION['msg'] = ""; ?></p>
+                                <p style="color:red;"><?php echo htmlentities($_SESSION['msg']);
+                                                        $_SESSION['msg'] = ""; ?></p>
 
                                 <div class="panel-group" id="accordion">
                                     <?php
@@ -215,9 +218,7 @@ if (isset($_GET["msg"])) {
                                                                             Tk.<?= $row["docFees"]; ?>
                                                                         </td>
                                                                         <td class="col-md-3">
-                                                                            <a href="" class="ordernow" 
-                                                                                data-id="<?php echo $row['id'] ?>"
-                                                                                data-amount="<?php echo $row['docFees'] ?>">
+                                                                            <a href="" class="ordernow" data-id="<?php echo $row['id'] ?>" data-amount="<?php echo $row['docFees'] ?>">
                                                                                 Take Appointment
                                                                             </a>
                                                                         </td>
@@ -249,6 +250,46 @@ if (isset($_GET["msg"])) {
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="appintment-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="" method="get" id="form">
+                    <input type="hidden" name="amount" id="paymentAmount" required>
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Create Appointment</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Doctor Id</label>
+                            <input type="text" name="t" id="docId" class="form-control" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Date</label>
+                            <input type="date" id="aptDate" min="<?php echo date("Y-m-d"); ?>" name="date" value="<?php echo date("Y-m-d"); ?>" class="form-control timeslottoggle" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Time Slot</label>
+                            <select name="time" class="form-control" id="dtimeslot" required></select>
+                            <div id="errorMsg" style="margin-top:5px;font-weight:bold;color:#0087ff"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a class="btn btn-default" data-dismiss="modal">Close</a>
+                        <button type="submit" class="btn btn-primary">Submit </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <?php include('include/footer.php'); ?>
 
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -265,6 +306,7 @@ if (isset($_GET["msg"])) {
     <script src="vendor/select2/select2.min.js"></script>
     <script src="vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
     <script src="vendor/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="vendor/loader/waitMe.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/form-elements.js"></script>
     <script>
@@ -274,12 +316,81 @@ if (isset($_GET["msg"])) {
 
             $('.ordernow').click(function(e) {
                 e.preventDefault();
-                var odrId = $(this).data('id'),
+                var docId = $(this).data('id'),
                     amount = $(this).data('amount');
 
-                if (confirm('Are you sure?')) {
-                    window.location.href = "?t=" + odrId + "&amount=" + amount;
+                if (docId && amount) {
+                    $('#paymentAmount').val(amount);
+                    $('#docId').val(docId);
+                    $('#appintment-modal').modal('show');
+
+                    $('#form').waitMe({
+                        effect: 'stretch'
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "../ajax.php",
+                        data: {
+                            get_doctor_time_slot: 1,
+                            docId: docId
+                        },
+                        dataType: 'json',
+                        success: function(Result) {
+                            $('#form').waitMe('hide');
+
+                            $('#dtimeslot').html('<option value="">Select Timeslot</option>');
+                            if (Result.success) {
+                                for (let i = 0; i < Result.schedule.length; i++) {
+                                    var timeSlot = $.trim(Result.schedule[i]);
+                                    $('#dtimeslot').append(`<option>${timeSlot}</option>`);
+                                }
+                            }
+
+                        },
+                        error: function() {
+                            $('#form').waitMe('hide');
+                            $('#dtimeslot').html('<option value="">Select Timeslot</option>');
+                        }
+                    });
+                    return;
                 }
+
+                alert('Something Went Wrong !');
+            });
+
+            $('#dtimeslot').change(function(e) {
+                e.preventDefault();
+
+                $('#form').waitMe({
+                    effect: 'stretch'
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "../ajax.php",
+                    data: {
+                        check_timeslot: 1,
+                        docId: $('#docId').val(),
+                        aptDate: $('#aptDate').val(),
+                        aptSlot: $('#dtimeslot').val()
+                    },
+                    dataType: 'json',
+                    error: function(xhr, error) {
+                        $('#form').waitMe('hide');
+                        $('#dtimeslot').prop('selectedIndex', 0);
+                        $("#errorMsg").html("Error in operation");
+                    },
+                    success: function(Result) {
+                        $('#form').waitMe('hide');
+                        $("#errorMsg").html(`${Result.amount} out of 3 patient booked in this time slot !`);
+
+                        if (!Result.success) {
+                            $('#dtimeslot').prop('selectedIndex', 0);
+                            alert("Maximum 3 patient can take appintment in a time slot !");
+                        }
+                    }
+                });
             });
         });
     </script>

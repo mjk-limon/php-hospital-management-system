@@ -10772,11 +10772,6 @@ td.small-width {
   z-index: 9999 !important;
 }
 
-.modal-content {
-  background: #e8e8e8;
-  box-shadow: none;
-}
-
 .modal-footer, .modal-header {
   border-color: #b5b5b5;
 }

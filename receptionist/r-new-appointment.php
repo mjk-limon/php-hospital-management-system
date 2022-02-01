@@ -8,7 +8,7 @@ check_login();
 ?>
 <?php
 if (isset($_POST['submit'])) {
-	$date = date("Y-m-d H:i:s", strtotime($_POST["date"]));
+	$date = date("Y-m-d H:i:s", strtotime($_POST["date"] . " " . explode("-", $_POST['time'])[0]));
 	$sql = "INSERT INTO appointment (patid, docid, date, slno, status, prescription) ";
 	$sql .= "VALUES ('{$_POST["patid"]}', '{$_POST["docid"]}', '{$date}', 0, 0, \"\") ";
 	if ($con->query($sql) == true) {
@@ -41,6 +41,7 @@ if (isset($_POST['submit'])) {
 	<link href="vendor/select2/select2.min.css" rel="stylesheet" media="screen">
 	<link href="vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
 	<link href="vendor/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
+	<link href="vendor/loader/waitMe.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="assets/css/styles.css">
 	<link rel="stylesheet" href="assets/css/plugins.css">
 	<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
@@ -75,7 +76,7 @@ if (isset($_POST['submit'])) {
 					<div class="container-fluid container-fullw bg-white">
 						<div class="row">
 							<div class="col-md-12">
-							
+
 								<?php if (isset($_GET['msg'])) : ?>
 									<div class="alert alert-info">
 										<?php echo $_GET['msg']; ?>
@@ -90,10 +91,10 @@ if (isset($_POST['submit'])) {
 											</div>
 											<div class="panel-body">
 
-												<form role="form" method="post" action="">
+												<form id="form" role="form" method="post" action="">
 													<div class="form-group">
 														<label for="patientname">Patient Name</label>
-														<select name="patid" class="form-control" required="true" autocomplete="off">\
+														<select name="patid" class="form-control" required="true" autocomplete="off">
 															<option value="">Select Patient</option>
 															<?php
 															$patient = get_all("patients");
@@ -110,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 													<div class="form-group">
 														<label for="patientname">Doctor Name</label>
-														<select name="docid" class="form-control" required="true" autocomplete="off">
+														<select name="docid" class="form-control timeslottoggle" id="docId" required="true" autocomplete="off">
 															<option value="">Select Doctor</option>
 															<?php
 															$doctors = get_all("doctors");
@@ -123,10 +124,18 @@ if (isset($_POST['submit'])) {
 															mysqli_free_result($doctors); ?>
 														</select>
 													</div>
+
 													<div class="form-group">
 														<label>Select Date</label>
-														<input type="datetime-local" min="<?= date("Y-m-d H:i:s"); ?>" name="date" value="<?= date("Y-m-d H:i:s"); ?>" class="form-control" />
+														<input type="date" id="aptDate" min="<?php echo date("Y-m-d"); ?>" name="date" value="<?php echo date("Y-m-d"); ?>" class="form-control timeslottoggle" />
 													</div>
+
+													<div class="form-group">
+														<label>Select Time Slot</label>
+														<select name="time" class="form-control" id="dtimeslot" required></select>
+														<div id="errorMsg" style="margin-top:5px;font-weight:bold;color:#0087ff"></div>
+													</div>
+
 													<button type="submit" name="submit" class="btn btn-o btn-primary">
 														Submit
 													</button>
@@ -134,12 +143,6 @@ if (isset($_POST['submit'])) {
 											</div>
 										</div>
 									</div>
-
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<div class="panel panel-white">
-
 
 								</div>
 							</div>
@@ -171,6 +174,7 @@ if (isset($_POST['submit'])) {
 	<script src="vendor/select2/select2.min.js"></script>
 	<script src="vendor/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 	<script src="vendor/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+	<script src="vendor/loader/waitMe.min.js"></script>
 	<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 	<!-- start: CLIP-TWO JAVASCRIPTS -->
 	<script src="assets/js/main.js"></script>
@@ -180,6 +184,74 @@ if (isset($_POST['submit'])) {
 		jQuery(document).ready(function() {
 			Main.init();
 			FormElements.init();
+
+			$('#docId').change(function(e) {
+				e.preventDefault();
+
+				$('#form').waitMe({
+					effect: 'stretch'
+				});
+
+				$.ajax({
+					type: "POST",
+					url: "../ajax.php",
+					data: {
+						get_doctor_time_slot: 1,
+						docId: $('#docId').val()
+					},
+					dataType: 'json',
+					success: function(Result) {
+						$('#form').waitMe('hide');
+
+						$('#dtimeslot').html('<option value="">Select Timeslot</option>');
+						if (Result.success) {
+							for (let i = 0; i < Result.schedule.length; i++) {
+								var timeSlot = $.trim(Result.schedule[i]);
+								$('#dtimeslot').append(`<option>${timeSlot}</option>`);
+							}
+						}
+
+					},
+					error: function() {
+						$('#form').waitMe('hide');
+						$('#dtimeslot').html('<option value="">Select Timeslot</option>');
+					}
+				});
+			});
+
+			$('#dtimeslot, ').change(function(e) {
+				e.preventDefault();
+
+				$('#form').waitMe({
+					effect: 'stretch'
+				});
+
+				$.ajax({
+					type: "POST",
+					url: "../ajax.php",
+					data: {
+						check_timeslot: 1,
+						docId: $('#docId').val(),
+						aptDate: $('#aptDate').val(),
+						aptSlot: $('#dtimeslot').val()
+					},
+					dataType: 'json',
+					error: function(xhr, error) {
+						$('#form').waitMe('hide');
+						$('#dtimeslot').prop('selectedIndex', 0);
+						$("#errorMsg").html("Error in operation");
+					},
+					success: function(Result) {
+						$('#form').waitMe('hide');
+						$("#errorMsg").html(`${Result.amount} out of 3 patient booked in this time slot !`);
+
+						if (!Result.success) {
+							$('#dtimeslot').prop('selectedIndex', 0);
+							alert("Maximum 3 patient can take appintment in a time slot !");
+						}
+					}
+				});
+			});
 		});
 	</script>
 	<!-- end: JavaScript Event Handlers for this page -->
